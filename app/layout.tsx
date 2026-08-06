@@ -29,7 +29,10 @@ export default function RootLayout({
           <div className="flex gap-6 font-medium">
             <Link href="/" className="hover:text-blue-300 transition-colors">หน้าแรก</Link>
             <Link href="/courses" className="hover:text-blue-300 transition-colors">รายวิชา</Link>
-            <Link href="/posts" className="hover:text-blue-300 transition-colors">บทความ</Link>
+            <Link href="/blog-spa" className="hover:text-blue-300 transition-colors">บทความ</Link>
+            <Link href="/contact" className="hover:text-blue-300 transition-colors">ติดต่อ</Link>
+            <Link href="/dashboard" className="hover:text-blue-300 transition-colors">Dashboard</Link>
+            <Link href="/login" className="hover:text-blue-300 transition-colors">เข้าสู่ระบบ</Link>
           </div>
         </nav>
 

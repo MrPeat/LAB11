@@ -9,10 +9,10 @@ export default function BlogSpaPage() {
   const searchParams = useSearchParams();
 
   // 1. ดึงค่าจาก URL มาเป็นค่าเริ่มต้น (ตอบโจทย์ W.3)
-  const initialSource = searchParams.get('source') === 'news' ? 'news' : 'products';
+  const initialSource = searchParams.get('source') === 'products' ? 'news' : 'products';
   const initialSearch = searchParams.get('q') || '';
   const initialSelectedId = searchParams.get('id') || null;
-
+  
   // 2. สร้าง State สำหรับเก็บข้อมูลต่างๆ
   const [source, setSource] = useState<'products' | 'news'>(initialSource);
   const [searchQuery, setSearchQuery] = useState(initialSearch);
