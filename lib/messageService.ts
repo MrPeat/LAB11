@@ -1,33 +1,56 @@
 // lib/messageService.ts
 import * as MessageModel from './messages';
 import { NotFoundError, ValidationError } from './errors';
+import { Prisma } from '@prisma/client';
 
-export function createMessage(data: { name: string; email: string; message: string }) {
+export async function createMessage(data: { name: string; email: string; message: string }) {
   if (!data.name || !data.email || !data.message) {
     throw new ValidationError('ข้อมูลไม่ครบ');
   }
-  return MessageModel.addMessage(data);
+  try {
+    return await MessageModel.addMessage(data);
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+      throw new ValidationError('อีเมลนี้ถูกใช้แล้ว');
+    }
+    throw err;
+  }
 }
 
-export function listMessages() {
-  return MessageModel.getMessages();
+export async function listMessages() {
+  return await MessageModel.getMessages();
 }
 
-export function getMessageById(id: string) {
-  const message = MessageModel.getMessages().find((m) => m.id === id) || null;
+export async function getMessageById(id: string) {
+  const message = await MessageModel.getMessageById(id);
   if (!message) {
     throw new NotFoundError('ไม่พบข้อความนี้');
   }
   return message;
 }
 
-export function editMessage(id: string, updates: Partial<{ message: string }>) {
+export async function editMessage(id: string, updates: Partial<{ message: string }>) {
   if (updates.message !== undefined && updates.message.trim() === '') {
     throw new ValidationError('ข้อความห้ามเป็นค่าว่าง');
   }
-  return MessageModel.updateMessage(id, updates);
+  try {
+    return await MessageModel.updateMessage(id, updates);
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2025') {
+      return null;
+    }
+    throw err;
+  }
 }
 
-export function removeMessage(id: string) {
-  return MessageModel.deleteMessage(id);
+export async function removeMessage(id: string) {
+  try {
+    await MessageModel.deleteMessage(id);
+    return true;
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2025') {
+      return false;
+    }
+    throw err;
+  }
 }

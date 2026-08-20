@@ -1,37 +1,21 @@
-export interface Todo {
-  id: string;
-  title: string;
-  completed: boolean;
-  createdAt: string;
+import { prisma } from './prisma';
+
+export async function addTodo(data: { title: string }) {
+  return prisma.todo.create({ data: { title: data.title } });
 }
 
-export const todos: Todo[] = [];
-
-export function addTodo(data: Omit<Todo, 'id' | 'createdAt' | 'completed'>) {
-  const item: Todo = {
-    id: crypto.randomUUID(),
-    title: data.title,
-    completed: false,
-    createdAt: new Date().toISOString(),
-  };
-  todos.push(item);
-  return item;
+export async function getTodos() {
+  return prisma.todo.findMany({ orderBy: { createdAt: 'desc' } });
 }
 
-export function getTodos() {
-  return todos;
+export async function getTodoById(id: string) {
+  return prisma.todo.findUnique({ where: { id } });
 }
 
-export function updateTodo(id: string, updates: Partial<Todo>) {
-  const index = todos.findIndex((t) => t.id === id);
-  if (index === -1) return null;
-  todos[index] = { ...todos[index], ...updates };
-  return todos[index];
+export async function updateTodo(id: string, updates: { title?: string; completed?: boolean }) {
+  return prisma.todo.update({ where: { id }, data: updates });
 }
 
-export function deleteTodo(id: string) {
-  const index = todos.findIndex((t) => t.id === id);
-  if (index === -1) return false;
-  todos.splice(index, 1);
-  return true;
+export async function deleteTodo(id: string) {
+  return prisma.todo.delete({ where: { id } });
 }

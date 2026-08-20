@@ -5,7 +5,7 @@ export const GET = withErrorHandling(async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
-  const todo = getTodoById(params.id);
+  const todo = await getTodoById(params.id);
   return Response.json({ todo });
 });
 
@@ -14,7 +14,7 @@ export const PATCH = withErrorHandling(async (
   { params }: { params: { id: string } }
 ) => {
   const updates = await request.json();
-  const updated = editTodo(params.id, updates);
+  const updated = await editTodo(params.id, updates);
   if (!updated) {
     return Response.json({ error: 'ไม่พบ Todo นี้' }, { status: 404 });
   }
@@ -25,7 +25,7 @@ export const DELETE = withErrorHandling(async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
-  const deleted = removeTodo(params.id);
+  const deleted = await removeTodo(params.id);
   if (!deleted) {
     return Response.json({ error: 'ไม่พบ Todo นี้' }, { status: 404 });
   }

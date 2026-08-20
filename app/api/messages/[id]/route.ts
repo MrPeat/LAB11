@@ -5,7 +5,7 @@ export const GET = withErrorHandling(async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
-  const message = getMessageById(params.id);
+  const message = await getMessageById(params.id);
   return Response.json({ message });
 });
 
@@ -14,7 +14,7 @@ export const PATCH = withErrorHandling(async (
   { params }: { params: { id: string } }
 ) => {
   const updates = await request.json();
-  const updated = editMessage(params.id, updates);
+  const updated = await editMessage(params.id, updates);
   if (!updated) {
     return Response.json({ error: 'ไม่พบข้อความนี้' }, { status: 404 });
   }
@@ -25,7 +25,7 @@ export const DELETE = withErrorHandling(async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
-  const deleted = removeMessage(params.id);
+  const deleted = await removeMessage(params.id);
   if (!deleted) {
     return Response.json({ error: 'ไม่พบข้อความนี้' }, { status: 404 });
   }
