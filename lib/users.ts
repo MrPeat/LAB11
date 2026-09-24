@@ -1,10 +1,11 @@
-export interface User { id: string; email: string; password: string; }
-
-// จำลองฐานข้อมูลผู้ใช้ (Mock data)
-const users: User[] = [
-  { id: '1', email: 'admin@tsu.ac.th', password: '1234' }
-];
+import bcrypt from 'bcrypt';
+import { prisma } from './prisma';
 
 export async function findUserByEmail(email: string) {
-  return users.find((u) => u.email === email) || null;
+  return prisma.user.findUnique({ where: { email } });
+}
+
+export async function createUser(email: string, plainPassword: string) {
+  const hashedPassword = await bcrypt.hash(plainPassword, 10);
+  return prisma.user.create({ data: { email, password: hashedPassword } });
 }
