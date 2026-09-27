@@ -83,3 +83,12 @@ export async function removeMessage(id: string, sessionUserId: string) {
     throw err;
   }
 }
+
+export async function reactToMessage(id: string) {
+  const message = await getMessageById(id); // Ensures it exists
+  try {
+    return await MessageModel.addReaction(id);
+  } catch (err) {
+    throw err;
+  }
+}

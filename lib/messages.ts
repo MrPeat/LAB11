@@ -19,3 +19,10 @@ export async function updateMessage(id: string, updates: { message?: string }) {
 export async function deleteMessage(id: string) {
   return prisma.message.delete({ where: { id } });
 }
+
+export async function addReaction(id: string) {
+  return prisma.message.update({
+    where: { id },
+    data: { reactions: { increment: 1 } },
+  });
+}
