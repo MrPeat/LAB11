@@ -6,6 +6,7 @@ export default function ContactForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [tag, setTag] = useState("general");
   const [error, setError] = useState("");
   
   // เพิ่ม State สำหรับจัดการ UI ตอนกดปุ่ม
@@ -39,7 +40,7 @@ export default function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message })
+        body: JSON.stringify({ name, email, message, tag })
       });
 
       if (res.ok) {
@@ -84,6 +85,16 @@ export default function ContactForm() {
         className="border p-2 w-full rounded text-black disabled:bg-gray-100 disabled:text-gray-400 min-h-[100px]" 
         disabled={isSubmitting}
       />
+      <select
+        value={tag}
+        onChange={(e) => setTag(e.target.value)}
+        className="border p-2 w-full rounded text-black disabled:bg-gray-100 disabled:text-gray-400"
+        disabled={isSubmitting}
+      >
+        <option value="general">สอบถามทั่วไป</option>
+        <option value="bug">แจ้งปัญหา</option>
+        <option value="feedback">เสนอแนะ</option>
+      </select>
       
       {/* ข้อความ Error สีแดง */}
       {error && <p className="text-red-600 text-sm font-medium">{error}</p>}
