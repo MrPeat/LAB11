@@ -27,6 +27,7 @@ export async function createMessage(raw: any) {
 }
 
 export async function listMessages() {
+  // main branch comment
   return await MessageModel.getMessages();
 }
 
