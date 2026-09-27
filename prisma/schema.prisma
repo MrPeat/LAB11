@@ -12,6 +12,7 @@ model Message {
   email     String   @unique
   message   String
   tag       String?
+  reactions Int      @default(0)
   authorId  String?
   createdAt DateTime @default(now())
 }
