@@ -1,4 +1,5 @@
 import LogoutButton from '@/components/LogoutButton';
+import ReactionButton from '@/components/ReactionButton';
 
 export const dynamic = 'force-dynamic';
 // เปลี่ยนมาดึงข้อมูลจาก API ภายในของเราเอง (หน้า API ที่เคยโชว์ {"messages":[]})
@@ -48,9 +49,10 @@ export default async function DashboardPage() {
                 คุณ: {msg.name}
               </h2>
               <p className="text-sm text-blue-600 mb-4">📧 {msg.email}</p>
-              <div className="text-gray-700 bg-gray-50 p-3 rounded text-sm border-l-4 border-green-500">
+              <div className="text-gray-700 bg-gray-50 p-3 rounded text-sm border-l-4 border-green-500 mb-3">
                 "{msg.message}"
               </div>
+              <ReactionButton messageId={msg.id} initialReactions={msg.reactions || 0} />
             </div>
           ))}
         </div>
